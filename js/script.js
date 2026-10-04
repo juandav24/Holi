@@ -1,135 +1,286 @@
 // ==========================================
-// BANCOFÁCIL
+// BANCOSEGURO
 // FUNCIONES DEL LOGIN
 // ==========================================
 
-const loginForm = document.getElementById("loginForm");
 
-const usuario = document.getElementById("usuario");
-const password = document.getElementById("password");
+// ==========================================
+// ELEMENTOS
+// ==========================================
 
-const usuarioError = document.getElementById("usuarioError");
-const passwordError = document.getElementById("passwordError");
+const loginForm =
+    document.getElementById("loginForm");
 
-const mostrarPassword = document.getElementById("mostrarPassword");
+const usuario =
+    document.getElementById("usuario");
+
+const password =
+    document.getElementById("password");
+
+const usuarioError =
+    document.getElementById("usuarioError");
+
+const passwordError =
+    document.getElementById("passwordError");
+
+const mostrarPassword =
+    document.getElementById("mostrarPassword");
+
+const loginDarkMode =
+    document.getElementById("loginDarkMode");
+
+
+// ==========================================
+// MODO OSCURO
+// ==========================================
+
+function actualizarModoOscuroLogin() {
+
+    const modo =
+        localStorage.getItem("modoOscuro");
+
+
+    if (modo === "activado") {
+
+        document.body.classList.add(
+            "dark-mode"
+        );
+
+
+        if (loginDarkMode) {
+
+            loginDarkMode.textContent =
+                "☀ Modo claro";
+
+        }
+
+    } else {
+
+        document.body.classList.remove(
+            "dark-mode"
+        );
+
+
+        if (loginDarkMode) {
+
+            loginDarkMode.textContent =
+                "◐ Modo oscuro";
+
+        }
+
+    }
+
+}
+
+
+if (loginDarkMode) {
+
+    loginDarkMode.addEventListener(
+        "click",
+        function () {
+
+            const oscuro =
+                document.body.classList.contains(
+                    "dark-mode"
+                );
+
+
+            if (oscuro) {
+
+                document.body.classList.remove(
+                    "dark-mode"
+                );
+
+                localStorage.setItem(
+                    "modoOscuro",
+                    "desactivado"
+                );
+
+                loginDarkMode.textContent =
+                    "◐ Modo oscuro";
+
+            } else {
+
+                document.body.classList.add(
+                    "dark-mode"
+                );
+
+                localStorage.setItem(
+                    "modoOscuro",
+                    "activado"
+                );
+
+                loginDarkMode.textContent =
+                    "☀ Modo claro";
+
+            }
+
+        }
+    );
+
+}
+
+
+actualizarModoOscuroLogin();
 
 
 // ==========================================
 // MOSTRAR / OCULTAR CONTRASEÑA
 // ==========================================
 
-mostrarPassword.addEventListener("click", function () {
+if (mostrarPassword) {
 
-    if (password.type === "password") {
+    mostrarPassword.addEventListener(
+        "click",
+        function () {
 
-        password.type = "text";
+            if (
+                password.type === "password"
+            ) {
 
-        mostrarPassword.textContent = "Ocultar";
+                password.type = "text";
 
-        mostrarPassword.setAttribute(
-            "aria-label",
-            "Ocultar contraseña"
-        );
+                mostrarPassword.textContent =
+                    "Ocultar";
 
-    } else {
+                mostrarPassword.setAttribute(
+                    "aria-label",
+                    "Ocultar contraseña"
+                );
 
-        password.type = "password";
+            } else {
 
-        mostrarPassword.textContent = "Mostrar";
+                password.type = "password";
 
-        mostrarPassword.setAttribute(
-            "aria-label",
-            "Mostrar contraseña"
-        );
+                mostrarPassword.textContent =
+                    "Mostrar";
 
-    }
+                mostrarPassword.setAttribute(
+                    "aria-label",
+                    "Mostrar contraseña"
+                );
 
-});
-
-
-// ==========================================
-// VALIDACIÓN DEL FORMULARIO
-// ==========================================
-
-loginForm.addEventListener("submit", function (event) {
-
-    event.preventDefault();
-
-
-    // Limpiar mensajes anteriores
-
-    usuarioError.textContent = "";
-    passwordError.textContent = "";
-
-    usuario.removeAttribute("aria-invalid");
-    password.removeAttribute("aria-invalid");
-
-
-    let formularioValido = true;
-
-
-    // ==========================================
-    // VALIDAR USUARIO
-    // ==========================================
-
-    if (usuario.value.trim() === "") {
-
-        usuarioError.textContent =
-            "Debes ingresar tu número de usuario.";
-
-        usuario.setAttribute(
-            "aria-invalid",
-            "true"
-        );
-
-        formularioValido = false;
-
-    }
-
-
-    // ==========================================
-    // VALIDAR CONTRASEÑA
-    // ==========================================
-
-    if (password.value.trim() === "") {
-
-        passwordError.textContent =
-            "Debes ingresar tu contraseña.";
-
-        password.setAttribute(
-            "aria-invalid",
-            "true"
-        );
-
-        formularioValido = false;
-
-    }
-
-
-    // ==========================================
-    // COMPROBAR RESULTADO
-    // ==========================================
-
-    if (!formularioValido) {
-
-        if (usuario.value.trim() === "") {
-
-            usuario.focus();
-
-        } else {
-
-            password.focus();
+            }
 
         }
+    );
 
-        return;
-    }
+}
 
 
-    // ==========================================
-    // ACCESO AL DASHBOARD
-    // ==========================================
+// ==========================================
+// LIMPIAR ERRORES
+// ==========================================
 
-    window.location.href = "dashboard.html";
+function limpiarErrores() {
 
-});
+    usuarioError.textContent = "";
+
+    passwordError.textContent = "";
+
+    usuario.removeAttribute(
+        "aria-invalid"
+    );
+
+    password.removeAttribute(
+        "aria-invalid"
+    );
+
+}
+
+
+// ==========================================
+// LOGIN
+// ==========================================
+
+if (loginForm) {
+
+    loginForm.addEventListener(
+        "submit",
+        function (event) {
+
+            event.preventDefault();
+
+
+            limpiarErrores();
+
+
+            let formularioValido = true;
+
+
+            // ======================================
+            // VALIDAR USUARIO
+            // ======================================
+
+            if (
+                usuario.value.trim() === ""
+            ) {
+
+                usuarioError.textContent =
+                    "Por favor, ingresa tu número de usuario.";
+
+                usuario.setAttribute(
+                    "aria-invalid",
+                    "true"
+                );
+
+                formularioValido = false;
+
+            }
+
+
+            // ======================================
+            // VALIDAR CONTRASEÑA
+            // ======================================
+
+            if (
+                password.value.trim() === ""
+            ) {
+
+                passwordError.textContent =
+                    "Por favor, ingresa tu contraseña.";
+
+                password.setAttribute(
+                    "aria-invalid",
+                    "true"
+                );
+
+                formularioValido = false;
+
+            }
+
+
+            // ======================================
+            // SI HAY ERRORES
+            // ======================================
+
+            if (!formularioValido) {
+
+                if (
+                    usuario.value.trim() === ""
+                ) {
+
+                    usuario.focus();
+
+                } else {
+
+                    password.focus();
+
+                }
+
+                return;
+
+            }
+
+
+            // ======================================
+            // LOGIN CORRECTO
+            // ======================================
+
+            window.location.href =
+                "dashboard.html";
+
+        }
+    );
+
+}
